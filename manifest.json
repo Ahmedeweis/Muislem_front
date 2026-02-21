@@ -1,12 +1,14 @@
 {
-    "name": "RemoteCore Labs",
-    "short_name": "RemoteCore",
-    "description": "Transform your vision into reality with AI and custom software solutions from RemoteCore Labs.",
+    "name": "مُسلم - تتبع العبادات اليومية",
+    "short_name": "مُسلم",
+    "description": "تنافسوا في ختم القرآن — كل عضو يسجّل الأجزاء اللي خلّصها مع مجموعته.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#F4F7FE",
-    "theme_color": "#2563EB",
+    "background_color": "#F8FAFC",
+    "theme_color": "#059669",
     "orientation": "portrait",
+    "lang": "ar",
+    "dir": "rtl",
     "icons": [
         {
             "src": "/logo.png",
