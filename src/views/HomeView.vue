@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen  text-slate-100 py-16 px-6 selection:bg-emerald-500/30">
+  <div class="min-h-screen text-slate-100 py-8 px-4 sm:py-16 sm:px-6 selection:bg-emerald-500/30">
     <div
       class="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-indigo-500/10 blur-[120px] pointer-events-none">
     </div>
 
     <div class="max-w-6xl mx-auto relative z-10 space-y-16">
 
-      <div class="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-slate-800/50 pb-10">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800/50 pb-8">
         <div class="space-y-3">
           <div
             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold tracking-widest uppercase">
@@ -18,18 +18,18 @@
             مجتمع الطاعة
           </div>
           <h2
-            class="text-5xl font-black tracking-tight bg-gradient-to-l from-blue-700  to-blue-500 bg-clip-text text-transparent font-arabic">
-            أنضم الي مجموعة او انشأ واحدة
+            class="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight bg-gradient-to-l from-blue-700 to-blue-500 bg-clip-text text-transparent font-arabic leading-snug">
+            انضم لمجموعة أو أنشئ واحدة
           </h2>
-          <p class="text-black text-lg max-w-md leading-relaxed">
+          <p class="text-black text-sm sm:text-base md:text-lg max-w-md leading-relaxed">
             انضم لصحبة صالحة في رحلة الختمة، ونافس في الخيرات.
           </p>
         </div>
 
         <button @click="showCreateModal = true"
-          class="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-10 py-5 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-emerald-500/40 hover:-translate-y-1">
-          <span class="relative z-10 flex items-center gap-2 text-lg">
-            <span class="text-2xl">+</span> إنشاء مجموعة جديدة
+          class="group relative overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-4 md:px-10 md:py-5 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-emerald-500/40 hover:-translate-y-1 w-full md:w-auto">
+          <span class="relative z-10 flex items-center justify-center gap-2 text-base md:text-lg">
+            <span class="text-xl md:text-2xl">+</span> إنشاء مجموعة جديدة
           </span>
           <div
             class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer">
