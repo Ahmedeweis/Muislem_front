@@ -131,7 +131,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
+import api from '../services/axios';
 
 // Import new components
 import HabitToggle from '../components/DailyHabits/HabitToggle.vue';
@@ -164,7 +164,7 @@ const showToast = (message) => {
 const fetchHabits = async () => {
     loading.value = true;
     try {
-        const response = await axios.get(`http://localhost:5000/api/habits?memberId=${memberId}&date=${selectedDate.value}`);
+        const response = await api.get(`/api/habits?memberId=${memberId}&date=${selectedDate.value}`);
         // Reset defaults first if no data
         habits.value = {
             morning_athkar: false,
@@ -195,7 +195,7 @@ const fetchHabits = async () => {
 const saveHabits = async () => {
     isSaving.value = true;
     try {
-        await axios.post('http://localhost:5000/api/habits', {
+        await api.post('/api/habits', {
             memberId,
             date: selectedDate.value,
             ...habits.value

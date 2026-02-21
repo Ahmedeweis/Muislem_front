@@ -226,7 +226,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
+import api from '../services/axios';
 
 const route = useRoute();
 const router = useRouter();
@@ -239,7 +239,7 @@ const selectedDay = ref(null);
 const fetchHistory = async () => {
     loading.value = true;
     try {
-        const response = await axios.get(`http://localhost:5000/api/habits/history?memberId=${memberId}`);
+        const response = await api.get(`/api/habits/history?memberId=${memberId}`);
         history.value = response.data;
     } catch (err) {
         console.error('Failed to fetch history', err);

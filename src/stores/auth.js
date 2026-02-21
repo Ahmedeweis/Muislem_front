@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
+import api from '../services/axios';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -13,14 +12,14 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(username, password) {
             try {
-                const response = await axios.post('http://localhost:5000/api/admin/login', { username, password });
+                const response = await api.post('/api/admin/login', { username, password });
                 this.token = response.data.token;
                 this.user = response.data.user;
 
                 localStorage.setItem('token', this.token);
                 localStorage.setItem('user', JSON.stringify(this.user));
 
-                axios.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
+                api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`;
                 return true;
             } catch (error) {
                 console.error('Login failed:', error);
@@ -29,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
         },
         async register(username, password) {
             try {
-                await axios.post('http://localhost:5000/api/admin/register', { username, password });
+                await api.post('/api/admin/register', { username, password });
                 return true;
             } catch (error) {
                 throw error.response?.data?.error || 'Registration failed';
@@ -40,7 +39,7 @@ export const useAuthStore = defineStore('auth', {
             this.token = null;
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            delete axios.defaults.headers.common['Authorization'];
+            delete api.defaults.headers.common['Authorization'];
             window.location.reload();
         }
     }
