@@ -239,7 +239,7 @@ const selectedDay = ref(null);
 const fetchHistory = async () => {
     loading.value = true;
     try {
-        const response = await api.get(`/api/habits/history?memberId=${memberId}`);
+        const response = await api.get(`/habits/history?memberId=${memberId}`);
         history.value = response.data;
     } catch (err) {
         console.error('Failed to fetch history', err);

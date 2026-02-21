@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(username, password) {
             try {
-                const response = await api.post('/api/admin/login', { username, password });
+                const response = await api.post('/admin/login', { username, password });
                 this.token = response.data.token;
                 this.user = response.data.user;
 
@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
         },
         async register(username, password) {
             try {
-                await api.post('/api/admin/register', { username, password });
+                await api.post('/admin/register', { username, password });
                 return true;
             } catch (error) {
                 throw error.response?.data?.error || 'Registration failed';

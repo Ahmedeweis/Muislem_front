@@ -14,7 +14,7 @@ export const useGroupsStore = defineStore('groups', {
         async fetchAllGroups() {
             this.loading = true;
             try {
-                const response = await api.get('/api/groups/all');
+                const response = await api.get('/groups/all');
                 this.allGroups = response.data;
             } catch (err) {
                 this.error = err.response?.data?.error || 'Failed to fetch groups';
@@ -23,12 +23,12 @@ export const useGroupsStore = defineStore('groups', {
             }
         },
         async createGroup(name, password) {
-            await api.post('/api/groups/create', { name, password });
+            await api.post('/groups/create', { name, password });
         },
         async verifyGroup(groupId, password) {
             this.loading = true;
             try {
-                await api.post('/api/groups/verify', { groupId, password });
+                await api.post('/groups/verify', { groupId, password });
                 this.verifiedGroups[groupId] = true;
                 return true;
             } catch (err) {
@@ -40,7 +40,7 @@ export const useGroupsStore = defineStore('groups', {
         async fetchGroupDetails(id) {
             this.loading = true;
             try {
-                const response = await api.get(`/api/groups/${id}`);
+                const response = await api.get(`/groups/${id}`);
                 this.currentGroup = response.data.group;
                 this.members = response.data.members; // Set members
             } catch (err) {
@@ -51,7 +51,7 @@ export const useGroupsStore = defineStore('groups', {
         },
         async addMember(groupId, name) {
             try {
-                const response = await api.post('/api/groups/add-member', { groupId, name });
+                const response = await api.post('/groups/add-member', { groupId, name });
                 // Optimistic: Add to list
                 this.members.push({ ...response.data, progress: [] });
             } catch (err) {
@@ -61,7 +61,7 @@ export const useGroupsStore = defineStore('groups', {
         },
         async toggleProgress(memberId, juzNumber, completed) {
             try {
-                await api.post('/api/groups/toggle-progress', { memberId, juzNumber, completed });
+                await api.post('/groups/toggle-progress', { memberId, juzNumber, completed });
                 // Optimistic Update
                 const member = this.members.find(m => m.id === memberId);
                 if (member) {

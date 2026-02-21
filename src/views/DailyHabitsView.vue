@@ -164,7 +164,7 @@ const showToast = (message) => {
 const fetchHabits = async () => {
     loading.value = true;
     try {
-        const response = await api.get(`/api/habits?memberId=${memberId}&date=${selectedDate.value}`);
+        const response = await api.get(`/habits?memberId=${memberId}&date=${selectedDate.value}`);
         // Reset defaults first if no data
         habits.value = {
             morning_athkar: false,
@@ -195,7 +195,7 @@ const fetchHabits = async () => {
 const saveHabits = async () => {
     isSaving.value = true;
     try {
-        await api.post('/api/habits', {
+        await api.post('/habits', {
             memberId,
             date: selectedDate.value,
             ...habits.value
