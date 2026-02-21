@@ -11,7 +11,7 @@
                 <header
                     class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 gap-6">
                     <div class="space-y-1">
-                        <h2 class="text-3xl font-black text-slate-800 font-arabic leading-tight">
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-800 font-arabic leading-tight">
                             مجموعة <span class="text-emerald-600">{{ groupsStore.currentGroup.name }}</span>
                         </h2>
                         <p class="text-slate-500 font-medium">شارك رفاقك البركة.. حدد الأجزاء التي أكملتها</p>
@@ -30,11 +30,11 @@
                 </header>
 
                 <section class="max-w-2xl mx-auto">
-                    <form @submit.prevent="handleAddMember" class="relative group">
+                    <form @submit.prevent="handleAddMember" class="flex flex-col sm:flex-row gap-2">
                         <input v-model="newMemberName" placeholder="أدخل اسمك للانضمام ..." required
-                            class="w-full p-5 pr-6 rounded-2xl bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all shadow-sm text-lg" />
+                            class="flex-1 p-4 rounded-2xl bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all shadow-sm text-base" />
                         <button type="submit"
-                            class="absolute left-2 rounded-2xl top-2 bottom-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 rounded-1.5xl font-bold transition-all shadow-md hover:shadow-emerald-200 flex items-center">
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-4 rounded-2xl font-bold transition-all shadow-md hover:shadow-emerald-200 whitespace-nowrap">
                             انضم الآن
                         </button>
                     </form>
@@ -65,10 +65,11 @@
                 </div>
 
                 <div v-if="groupsStore.members.length === 0"
-                    class="bg-white rounded-[2.5rem] p-20 text-center shadow-sm border border-slate-100 mt-8">
+                    class="bg-white rounded-[2rem] p-10 sm:p-16 text-center shadow-sm border border-slate-100 mt-6">
                     <div class="flex flex-col items-center gap-3">
-                        <span class="text-4xl text-slate-300">🌙</span>
-                        <p class="text-slate-400 font-medium text-lg">لا يوجد أعضاء في هذه المجموعة بعد.</p>
+                        <span class="text-5xl">🌙</span>
+                        <p class="text-slate-500 font-bold text-base sm:text-lg font-arabic">لا يوجد أعضاء في هذه المجموعة بعد</p>
+                        <p class="text-slate-400 text-sm">كن أول من ينضم وابدأ رحلة الختمة! ✨</p>
                     </div>
                 </div>
 
