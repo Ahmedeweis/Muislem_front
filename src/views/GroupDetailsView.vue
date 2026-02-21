@@ -1,5 +1,22 @@
 <template>
     <div class=" bg-[#F8FAFC] py-12 px-4 sm:px-6">
+
+      <!-- إشعار الانضمام الاحتفالي -->
+      <transition name="join-toast">
+        <div v-if="joinToastName" class="join-toast-overlay">
+          <div class="join-toast-card">
+            <!-- كونفيتي طائر -->
+            <div class="confetti-wrap" aria-hidden="true">
+              <span v-for="n in 18" :key="n" class="confetti-dot" :style="confettiStyle(n)"></span>
+            </div>
+
+            <div class="join-toast-emoji">🎉</div>
+            <p class="join-toast-welcome">مرحباً بك!</p>
+            <p class="join-toast-name">{{ joinToastName }}</p>
+            <p class="join-toast-sub">وفقك الله في رحلتك معنا 🤍</p>
+          </div>
+        </div>
+      </transition>
         <div class="max-w-6xl mx-auto space-y-8">
 
             <div v-if="groupsStore.loading" class="flex justify-center items-center p-20">
@@ -156,10 +173,31 @@ const topMembers = computed(() => {
     return sortedMembers.slice(0, 3);
 });
 
+const joinToastName = ref('');
+
+const confettiStyle = (n) => {
+  const colors = ['#10b981','#f59e0b','#3b82f6','#ec4899','#8b5cf6','#ef4444'];
+  const angle = (n / 18) * 360;
+  const dist = 60 + Math.random() * 40;
+  const x = Math.cos((angle * Math.PI) / 180) * dist;
+  const y = Math.sin((angle * Math.PI) / 180) * dist;
+  return {
+    '--tx': `${x}px`,
+    '--ty': `${y}px`,
+    background: colors[n % colors.length],
+    animationDelay: `${(n % 6) * 0.06}s`,
+  };
+};
+
 const handleAddMember = async () => {
+    const name = newMemberName.value.trim();
+    if (!name) return;
     try {
-        await groupsStore.addMember(groupId, newMemberName.value);
+        await groupsStore.addMember(groupId, name);
         newMemberName.value = '';
+        // إظهار إشعار الانضمام الاحتفالي
+        joinToastName.value = name;
+        setTimeout(() => { joinToastName.value = ''; }, 4000);
     } catch (err) {
         alert('حدث خطأ أثناء إضافة العضو');
     }
@@ -169,3 +207,108 @@ const toggleProgress = async (member, juzNumber, isChecked) => {
     await groupsStore.toggleProgress(member.id, juzNumber, isChecked);
 };
 </script>
+
+<style scoped>
+/* ===== طبقة الإشعار الاحتفالي ===== */
+.join-toast-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.join-toast-card {
+  position: relative;
+  background: #fff;
+  border-radius: 2rem;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  box-shadow: 0 30px 80px -10px rgba(16, 185, 129, 0.35),
+              0 0 0 1px rgba(16, 185, 129, 0.12);
+  max-width: 22rem;
+  width: 90vw;
+  overflow: visible;
+  animation: card-pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes card-pop {
+  0%   { opacity: 0; transform: scale(0.5) translateY(40px); }
+  100% { opacity: 1; transform: scale(1) translateY(0);      }
+}
+
+/* أيقونة الاحتفال */
+.join-toast-emoji {
+  font-size: 3.5rem;
+  line-height: 1;
+  display: block;
+  animation: emoji-spin 0.6s ease 0.15s both;
+}
+
+@keyframes emoji-spin {
+  0%   { transform: rotate(-20deg) scale(0.5); opacity: 0; }
+  60%  { transform: rotate(10deg) scale(1.2); opacity: 1; }
+  100% { transform: rotate(0) scale(1); }
+}
+
+/* نص "مرحباً بك" */
+.join-toast-welcome {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-top: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* اسم العضو */
+.join-toast-name {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #059669, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0.25rem 0;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* النص الفرعي */
+.join-toast-sub {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
+}
+
+/* ===== كونفيتي ===== */
+.confetti-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.confetti-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: confetti-burst 0.7s ease-out 0.1s both;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes confetti-burst {
+  0%   { opacity: 1; transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0.3); }
+}
+
+/* ===== تأثير الدخول والخروج للـ transition ===== */
+.join-toast-enter-active { transition: none; }
+.join-toast-leave-active { transition: opacity 0.5s ease, transform 0.5s ease; }
+.join-toast-leave-to    { opacity: 0; transform: translateY(-30px) scale(0.9); }
+</style>
