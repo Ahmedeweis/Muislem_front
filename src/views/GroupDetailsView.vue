@@ -68,7 +68,8 @@
                     class="bg-white rounded-[2rem] p-10 sm:p-16 text-center shadow-sm border border-slate-100 mt-6">
                     <div class="flex flex-col items-center gap-3">
                         <span class="text-5xl">🌙</span>
-                        <p class="text-slate-500 font-bold text-base sm:text-lg font-arabic">لا يوجد أعضاء في هذه المجموعة بعد</p>
+                        <p class="text-slate-500 font-bold text-base sm:text-lg font-arabic">لا يوجد أعضاء في هذه
+                            المجموعة بعد</p>
                         <p class="text-slate-400 text-sm">كن أول من ينضم وابدأ رحلة الختمة! ✨</p>
                     </div>
                 </div>

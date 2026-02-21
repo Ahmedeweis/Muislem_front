@@ -6,7 +6,8 @@
 
     <div class="max-w-6xl mx-auto relative z-10 space-y-16">
 
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800/50 pb-8">
+      <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800/50 pb-8">
         <div class="space-y-3">
           <div
             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold tracking-widest uppercase">
@@ -52,7 +53,7 @@
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div v-for="group in groupsStore.allGroups" :key="group.id"
+        <div v-for="group in sortedGroups" :key="group.id"
           class="group relative bg-white border border-slate-100 p-8 rounded-[2.5rem] transition-all duration-500 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_60px_-10px_rgba(16,185,129,0.15)] hover:-translate-y-2 flex flex-col justify-between overflow-hidden">
 
           <div
@@ -217,7 +218,7 @@ font-arabic {
 </style>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useGroupsStore } from '../stores/groups';
 import { useRouter } from 'vue-router';
 
@@ -255,6 +256,16 @@ const handleForm = () => {
 
 onMounted(() => {
   groupsStore.fetchAllGroups();
+});
+
+// المجموعات المفتوحة (free) أولاً، ثم الخاصة — وداخل كل فئة الأقدم أولاً
+const sortedGroups = computed(() => {
+  return [...groupsStore.allGroups].sort((a, b) => {
+    // المفتوح (false) قبل الخاص (true)
+    if (a.is_private !== b.is_private) return a.is_private ? 1 : -1;
+    // الأقدم أولاً في نفس الفئة
+    return new Date(a.created_at) - new Date(b.created_at);
+  });
 });
 
 const enterGroup = async (group) => {
