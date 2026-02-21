@@ -146,9 +146,15 @@
               </template>
 
               <div class="flex flex-col gap-4 pt-6">
-                <button type="submit"
-                  class="w-full bg-emerald-600 hover:bg-emerald-500 py-5 rounded-2xl font-bold text-lg text-white shadow-[0_8px_20px_rgba(16,185,129,0.25)] hover:shadow-[0_10px_25px_rgba(16,185,129,0.35)] transition-all transform hover:-translate-y-0.5">
-                  {{ showCreateModal ? 'تأكيد وإنشاء' : 'تأكيد وانضمام' }}
+                <button type="submit" :disabled="isSubmitting"
+                  class="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-70 disabled:cursor-not-allowed py-5 rounded-2xl font-bold text-lg text-white shadow-[0_8px_20px_rgba(16,185,129,0.25)] hover:shadow-[0_10px_25px_rgba(16,185,129,0.35)] transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-3">
+                  <!-- Spinner -->
+                  <svg v-if="isSubmitting" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                  </svg>
+                  <span>{{ isSubmitting ? 'جاري التحقق...' : (showCreateModal ? 'تأكيد وإنشاء' : 'تأكيد وانضمام')
+                    }}</span>
                 </button>
                 <button type="button" @click="closeModals"
                   class="text-slate-500 hover:text-slate-700 transition-colors font-medium">
@@ -233,6 +239,7 @@ const newGroupPassword = ref('');
 
 const passwordInput = ref('');
 const toastMessage = ref('');
+const isSubmitting = ref(false);
 
 const showToast = (message) => {
   toastMessage.value = message;
@@ -290,6 +297,7 @@ const enterGroup = async (group) => {
 };
 
 const handleCreateGroup = async () => {
+  isSubmitting.value = true;
   try {
     const passwordToSend = newGroupPassword.value.trim() === '' ? '1' : newGroupPassword.value;
     await groupsStore.createGroup(newGroupName.value, passwordToSend);
@@ -299,10 +307,13 @@ const handleCreateGroup = async () => {
     groupsStore.fetchAllGroups();
   } catch (err) {
     showToast(err.response?.data?.error || err.message || 'حدث خطأ أثناء الإنشاء');
+  } finally {
+    isSubmitting.value = false;
   }
 };
 
 const handlePasswordSubmit = async () => {
+  isSubmitting.value = true;
   try {
     await groupsStore.verifyGroup(selectedGroup.value.id, passwordInput.value);
     showPasswordModal.value = false;
@@ -316,6 +327,8 @@ const handlePasswordSubmit = async () => {
     } else {
       showToast('كلمة المرور غير صحيحة');
     }
+  } finally {
+    isSubmitting.value = false;
   }
 };
 </script>
